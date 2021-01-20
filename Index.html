@@ -6,7 +6,9 @@
 
 	<script type="text/javascript">
 	function getResult (f) {
-		var vent_w = 4, vent_h = 1, card_w = f.w.value * 1, card_h = f.h.value * 1;
+		//vent_w - width of vent, vent_h is height of vent
+		var vent_w = 4, vent_h = 1;
+		var card_w = f.w.value * 1, card_h = f.h.value * 1;
 		
 		if (card_w < vent_w+2 || card_h < vent_h+2)
 		{
@@ -16,26 +18,48 @@
 		{
 			var count_w = Math.floor(card_w / (vent_w + 1));
 			var count_h = Math.floor(card_h / (vent_h + 1));
-			var space_w = ((card_w - (count_w * vent_w)) / (count_w + 1)).toFixed(1);
-			var space_h = ((card_h - (count_h * vent_h)) / (count_h + 1)).toFixed(1);
+			var space_w = ((card_w - (count_w * vent_w)) / (count_w + 1));
+			var space_h = ((card_h - (count_h * vent_h)) / (count_h + 1));
 			
 			//if number of spaces less than 1 inch, then we should solve mistake
 			if (space_w < 1)
 			{
 				count_w = count_w - 1;
-				space_w = ((card_w - (count_w * vent_w)) / (count_w + 1)).toFixed(1);
+				space_w = ((card_w - (count_w * vent_w)) / (count_w + 1));
 			}
 			
 			if (space_h < 1)
 			{
 				count_h = count_h - 1;
-				space_h = ((card_h - (count_h * vent_h)) / (count_h + 1)).toFixed(1);
+				space_h = ((card_h - (count_h * vent_h)) / (count_h + 1));
 			}
 			
 			var count_all = count_w * count_h;
 			
 			document.getElementById('result').innerHTML = '<br> The maximum number of vents = ' + count_all + ' <br> The spacing of the vents = ' + space_w + '/' + space_h;
 			
+			//let's draw our card and vents :)
+			var dcard_h = card_h * 10;
+			var dcard_w = card_w * 10;
+			var elem = document.getElementById("Card");
+			canvas = elem.getContext("2d");
+			canvas.fillStyle = "blue";
+			canvas.fillRect(0, 0, dcard_w, dcard_h);
+			
+			var  x = 0, y = 0;
+				
+			for (let i = 1; i <= count_w; i++) 
+			{
+				x += space_w * 10;
+				for (let j = 1; j <= count_h; j++) 
+				{
+					y += space_h * 10;
+					canvas.clearRect(x, y, 40, 10);
+					y += vent_h * 10;
+				}
+				y = 0;
+				x += vent_w * 10;
+			}
 		}
 	};
 	</script>
@@ -47,6 +71,10 @@
 			<input type="submit" value="Calculate numbers of vents in the card" />
 			<div id="result"></div>
 		</form>
-		</br>
+		<br>
+		<h3>Design of the Card with vents:</h3>
+		<canvas id="Card" width="1500" height="1000">
+            Your browser doesn't support element Canvas
+        </canvas>
 	</body>
 </html>
