@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vents calculator</title>
+	</head>
+
+	<script type="text/javascript">
+	function getResult (f) {
+		var vent_w = 4, vent_h = 1, card_w = f.w.value * 1, card_h = f.h.value * 1;
+		
+		if (card_w < vent_w+2 || card_h < vent_h+2)
+		{
+			alert('No! Sizes of the card are too small. Try one more time!');
+		}
+		else
+		{
+			var count_w = Math.floor(card_w / (vent_w + 1));
+			var count_h = Math.floor(card_h / (vent_h + 1));
+			var space_w = ((card_w - (count_w * vent_w)) / (count_w + 1)).toFixed(1);
+			var space_h = ((card_h - (count_h * vent_h)) / (count_h + 1)).toFixed(1);
+			
+			//if number of spaces less than 1 inch, then we should solve mistake
+			if (space_w < 1)
+			{
+				count_w = count_w - 1;
+				space_w = ((card_w - (count_w * vent_w)) / (count_w + 1)).toFixed(1);
+			}
+			
+			if (space_h < 1)
+			{
+				count_h = count_h - 1;
+				space_h = ((card_h - (count_h * vent_h)) / (count_h + 1)).toFixed(1);
+			}
+			
+			var count_all = count_w * count_h;
+			
+			document.getElementById('result').innerHTML = '<br> The maximum number of vents = ' + count_all + ' <br> The spacing of the vents = ' + space_w + '/' + space_h;
+			
+		}
+	};
+	</script>
+
+	<body>
+		<form onsubmit="getResult(this); return false">
+			Width of the card <input type="text" name="w" value="13"/><br>
+			Height of the card <input type="text" name="h" value="5"/><br>
+			<input type="submit" value="Calculate numbers of vents in the card" />
+			<div id="result"></div>
+		</form>
+		</br>
+	</body>
+</html>
